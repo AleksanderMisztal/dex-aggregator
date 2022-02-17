@@ -13,10 +13,7 @@ const factory = new ethers.Contract(
   provider
 );
 
-export const getPairAddress = async (address1, address2) => {
-  const pairAddress = await factory.getPair(address1, address2);
-  return pairAddress;
-};
+export const getPairAddress = factory.getPair;
 
 export const getTokenName = async (tokenAddress) => {
   const tokenContract = new ethers.Contract(tokenAddress, erc20abi, provider);

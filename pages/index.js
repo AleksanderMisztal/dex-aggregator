@@ -1,39 +1,129 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import {
+  getBalance,
+  getPairAddress,
+  getDenominatedPairReserves,
+  getTokenName,
+  getTotalSupply,
+} from '../contractMethods';
 
-export default function Home() {
-  const [names, setNames] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+const Input = ({ value, name, placeholder, onChange }) => (
+  <div className="mx-auto my-2 w-80">
+    <label htmlFor={name} className="text-gray-500">
+      {placeholder}
+    </label>
+    <input
+      className="w-full p-2 bg-blue-200  rounded text-xs"
+      {...{ value, name, placeholder, onChange }}
+    />
+  </div>
+);
 
-  useEffect(() => {
+const Home = () => {
+  const [address1, setAddress1] = useState(
+    '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+  );
+  const [address2, setAddress2] = useState(
+    '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+  );
+  const [userAddress, setUserAddress] = useState(
+    '0xcd8AA390e6EAbBd2169b3580C1F7ce854675fD03'
+  );
+
+  const [balance, setBalance] = useState(undefined);
+  const [totalSupply, setTotalSupply] = useState(undefined);
+  const [token1, setToken1] = useState(undefined);
+  const [token2, setToken2] = useState(undefined);
+  const [reserve1, setReserve1] = useState(undefined);
+  const [reserve2, setReserve2] = useState(undefined);
+
+  const [loading, setLoading] = useState(true);
+
+  const getInfo = async (address1, address2) => {
+    // Necessary to prevent rerenders with partially loaded data
     setLoading(true);
-    fetch('api/names-lookup')
-      .then((res) => res.json())
-      .then((data) => {
-        setNames(data);
-        setLoading(false);
-      });
-  }, []);
 
-  if (isLoading) return <p>Loading...</p>;
+    // Could speed up by not awaiting sequentially
+    // Could have getPairInfo = async (address1, address2)
+    //    => {object with all the data} defined in contractMethods.js
+    //   and a single set state here
+    const pairAddress = await getPairAddress(address1, address2);
+    const balance = await getBalance(pairAddress, userAddress);
+    const token1 = await getTokenName(address1);
+    const token2 = await getTokenName(address2);
+    const totalSupply = await getTotalSupply(pairAddress);
+    const [reserve1, reserve2] = await getDenominatedPairReserves(
+      address1,
+      address2
+    );
+
+    setBalance(balance);
+    setTotalSupply(totalSupply);
+    setToken1(token1);
+    setToken2(token2);
+    setReserve1(reserve1);
+    setReserve2(reserve2);
+    setLoading(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { address1, address2 } = e.target;
+    getInfo(address1.value, address2.value);
+  };
+
+  const fractionOwned = balance / totalSupply;
+  const userBalance1 = reserve1 * fractionOwned;
+  const userBalance2 = reserve2 * fractionOwned;
 
   return (
-    <div>
-      <Head>
-        <title>Dex aggregator</title>
-        <meta
-          name="description"
-          content="See your total holdings accross uniswap pools"
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <Input
+          value={userAddress}
+          name="user_address"
+          placeholder="User address"
+          onChange={(e) => setUserAddress(e.target.value)}
         />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div>
-        {names.map(([address, name], i) => (
-          <div key={i}>
-            {address}: {name}
-          </div>
-        ))}
-      </div>
+        <Input
+          value={address1}
+          name="address1"
+          placeholder={'First token: ' + token1}
+          onChange={(e) => setAddress1(e.target.value)}
+        />
+        <Input
+          value={address2}
+          name="address2"
+          placeholder={'Second token: ' + token2}
+          onChange={(e) => setAddress2(e.target.value)}
+        />
+        <div className="mx-auto my-6 w-60">
+          <button
+            className="bg-blue-200 text-center w-full rounded p-2"
+            type="submit"
+          >
+            Get info
+          </button>
+        </div>
+      </form>
+      {!loading && (
+        <div className="w-80 mx-auto text-center">
+          Fraction: {fractionOwned.toString()} <br />
+          Balance: {balance.toString()} <br />
+          Total Supply: {totalSupply.toString()}
+          <br />
+          Reserve 1: {reserve1.toString()}
+          <br />
+          Reserve 2: {reserve2.toString()}
+          <br />
+          User balance 1: {userBalance1.toString()}
+          <br />
+          User balance 2: {userBalance2.toString()}
+          <br />
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Home;
