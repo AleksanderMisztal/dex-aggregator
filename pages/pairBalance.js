@@ -1,15 +1,5 @@
-import { BigNumber } from 'ethers';
 import React, { useState } from 'react';
-
-const fetchApi = (endpoint, data) =>
-  fetch(`/api/${endpoint}`, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
-const fetchText = async (endpoint, data) =>
-  await (await fetchApi(endpoint, data)).text();
-const fetchJson = async (endpoint, data) =>
-  await (await fetchApi(endpoint, data)).json();
+import { getBalance, getPairAddress, getTokenName } from '../contractMethods';
 
 const Input = ({ value, name, placeholder, onChange }) => (
   <div className="mx-auto my-2 w-60">
@@ -39,16 +29,14 @@ const PairBalance = () => {
   const [token2, setToken2] = useState(undefined);
 
   const getInfo = async (address1, address2) => {
-    console.log(address1, address2);
-    const pairAddress = await fetchText('pair-lookup', { address1, address2 });
-    console.log({ pairAddress });
-    const rawBalance = await fetchJson('balance', { pairAddress, userAddress });
-    const balance = BigNumber.from(rawBalance.hex).toString();
-    console.log({ balance });
+    const pairAddress = await getPairAddress(address1, address2);
+    const balance = await getBalance(pairAddress, userAddress);
+    const token1 = await getTokenName(address1);
+    const token2 = await getTokenName(address2);
+
     setBalance(balance);
-    setToken1(await fetchText('token-name', { tokenAddress: address1 }));
-    setToken2(await fetchText('token-name', { tokenAddress: address2 }));
-    console.log({ token1, token2 });
+    setToken1(token1);
+    setToken2(token2);
   };
 
   const handleSubmit = (e) => {
@@ -89,7 +77,9 @@ const PairBalance = () => {
         </div>
       </form>
       {balance !== undefined && (
-        <div className="w-60 mx-auto text-center">Balance: {balance}</div>
+        <div className="w-60 mx-auto text-center">
+          Balance: {balance.toString()}
+        </div>
       )}
     </div>
   );
