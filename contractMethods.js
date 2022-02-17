@@ -24,8 +24,34 @@ export const getTokenName = async (tokenAddress) => {
   return name;
 };
 
+export const getDecimals = async (address) => {
+  const tokenContract = new ethers.Contract(address, erc20abi, provider);
+  const decimals = await tokenContract.decimals();
+  return decimals;
+};
+
 export const getBalance = async (pairAddress, userAddress) => {
   const pair = new ethers.Contract(pairAddress, IUniswapV2Pair.abi, provider);
   const balance = await pair.balanceOf(userAddress);
   return balance;
+};
+
+export const getTotalSupply = async (pairAddress) => {
+  const pair = new ethers.Contract(pairAddress, IUniswapV2Pair.abi, provider);
+  const totalSupply = await pair.totalSupply();
+  return totalSupply;
+};
+
+export const getDenominatedPairReserves = async (address1, address2) => {
+  const pairAddress = await factory.getPair(address1, address2);
+  const pair = new ethers.Contract(pairAddress, IUniswapV2Pair.abi, provider);
+  const pairAddress1 = await pair.token0();
+  const { reserve0, reserve1 } = await pair.getReserves();
+  const decimals1 = await getDecimals(address1);
+  const decimals2 = await getDecimals(address2);
+  const denReserve1 = reserve0 / 10 ** decimals1;
+  const denReserve2 = reserve1 / 10 ** decimals2;
+  return pairAddress1 == address1
+    ? [denReserve2, denReserve1]
+    : [denReserve1, denReserve2];
 };
