@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { getCoinDataByAddress } from '../lib/coingeckoApi';
 import {
   getBalance,
   getPairAddress,
   getDenominatedPairReserves,
-  getTokenName,
   getTotalSupply,
-} from '../contractMethods';
+} from '../lib/contractMethods';
 
 const Input = ({ value, name, placeholder, onChange }) => (
   <div className="mx-auto my-2 w-80">
@@ -37,25 +37,23 @@ const Home = () => {
   const [reserve1, setReserve1] = useState(undefined);
   const [reserve2, setReserve2] = useState(undefined);
 
-  const [loading, setLoading] = useState(true);
+  const [loaded, setLoaded] = useState(false);
 
   const getInfo = async (address1, address2) => {
-    // Necessary to prevent rerenders with partially loaded data
-    setLoading(true);
-
     // Could speed up by not awaiting sequentially
     // Could have getPairInfo = async (address1, address2)
     //    => {object with all the data} defined in contractMethods.js
     //   and a single set state here
     const pairAddress = await getPairAddress(address1, address2);
     const balance = await getBalance(pairAddress, userAddress);
-    const token1 = await getTokenName(address1);
-    const token2 = await getTokenName(address2);
     const totalSupply = await getTotalSupply(pairAddress);
     const [reserve1, reserve2] = await getDenominatedPairReserves(
       address1,
       address2
     );
+
+    const token1 = await getCoinDataByAddress(address1);
+    const token2 = await getCoinDataByAddress(address2);
 
     setBalance(balance);
     setTotalSupply(totalSupply);
@@ -63,7 +61,7 @@ const Home = () => {
     setToken2(token2);
     setReserve1(reserve1);
     setReserve2(reserve2);
-    setLoading(false);
+    setLoaded(true);
   };
 
   const handleSubmit = (e) => {
@@ -72,12 +70,8 @@ const Home = () => {
     getInfo(address1.value, address2.value);
   };
 
-  const fractionOwned = balance / totalSupply;
-  const userBalance1 = reserve1 * fractionOwned;
-  const userBalance2 = reserve2 * fractionOwned;
-
-  return (
-    <div className="container">
+  if (!loaded)
+    return (
       <form onSubmit={handleSubmit}>
         <Input
           value={userAddress}
@@ -106,22 +100,33 @@ const Home = () => {
           </button>
         </div>
       </form>
-      {!loading && (
-        <div className="w-80 mx-auto text-center">
-          Fraction: {fractionOwned.toString()} <br />
-          Balance: {balance.toString()} <br />
-          Total Supply: {totalSupply.toString()}
-          <br />
-          Reserve 1: {reserve1.toString()}
-          <br />
-          Reserve 2: {reserve2.toString()}
-          <br />
-          User balance 1: {userBalance1.toString()}
-          <br />
-          User balance 2: {userBalance2.toString()}
-          <br />
-        </div>
-      )}
+    );
+
+  const fractionOwned = balance / totalSupply;
+  const userBalance1 = reserve1 * fractionOwned;
+  const userBalance2 = reserve2 * fractionOwned;
+  const userBalance1Usd = userBalance1 * token1.price;
+  const userBalance2Usd = userBalance2 * token2.price;
+  return (
+    <div className="container">
+      <div className="w-80 mx-auto text-center">
+        Fraction: {fractionOwned.toString()} <br />
+        Balance: {balance.toString()} <br />
+        Total Supply: {totalSupply.toString()}
+        <br />
+        Reserve 1: {reserve1.toString()}
+        <br />
+        Reserve 2: {reserve2.toString()}
+        <br />
+        User balance 1: {userBalance1.toString()}
+        <br />
+        User balance 2: {userBalance2.toString()}
+        <br />
+        Usd 1: {userBalance1Usd.toString()}
+        <br />
+        Usd 2: {userBalance2Usd.toString()}
+        <br />
+      </div>
     </div>
   );
 };
