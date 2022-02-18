@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import CoinInfo from './CoinInfo';
-import { fetchJson } from '../lib/fetchApi';
-
-const getCoins = (phrase) => fetchJson('/api/coins', { phrase });
+import { findTopEthCoins } from '../lib/coingeckoApi';
 
 const CoinsList = ({ coins }) => {
   if (coins.length === 0)
@@ -20,13 +18,13 @@ const CoinsList = ({ coins }) => {
   );
 };
 
-export const CoinSearch = (props) => {
+export const CoinSearch = ({ initCoins, ethCoinsList }) => {
   const [phrase, setPhrase] = useState('');
-  const [coins, setCoins] = useState(props.initCoins);
+  const [coins, setCoins] = useState(initCoins);
 
   const findCoins = (phrase) => {
-    if (!phrase) setCoins(props.initCoins);
-    else getCoins(phrase).then(setCoins);
+    if (!phrase) setCoins(initCoins);
+    else findTopEthCoins(phrase, ethCoinsList).then(setCoins);
   };
 
   const handleChange = (e) => {

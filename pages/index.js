@@ -1,11 +1,13 @@
 import React from 'react';
 import { CoinSearch } from '../components/CoinSearch';
 import { Navbar } from '../components/Navbar';
-import { findTopEthCoins } from './api/coins';
+import { findTopEthCoins } from '../lib/coingeckoApi';
+import fs from 'fs';
 
 export async function getStaticProps(context) {
-  const initCoins = await findTopEthCoins('');
-  return { props: { initCoins } };
+  const ethCoinsList = JSON.parse(fs.readFileSync('./public/ethCoins.json'));
+  const initCoins = await findTopEthCoins('', ethCoinsList);
+  return { props: { initCoins, ethCoinsList } };
 }
 
 export default function Coins(props) {
