@@ -10,9 +10,9 @@ const CoinsList = ({ coins }) => {
       <div className="text-slate-500 text-center mt-6">No coins found</div>
     );
   return (
-    <ul className="max-w-md">
+    <ul className="max-h-72 overflow-scroll overflow-x-hidden p-1">
       {coins.map((coin, i) => (
-        <li key={i} className="my-3">
+        <li key={i} className="my-2 mr-2">
           <CoinInfo coin={coin} onClick={() => alert(coin.name)} />
         </li>
       ))}
@@ -32,12 +32,12 @@ export const CoinSearch = (props) => {
   };
 
   return (
-    <div className="container w-full max-w-sm mx-auto">
+    <div className="container w-full max-w-md mx-auto">
       <div className="shadow-lg rounded-lg m-10 p-6">
         <h1 className="text-center font-bold">Coin search</h1>
         <form action="" autoComplete="off">
           <input
-            className="border-2 border-slate-200 rounded-md shadow-inner w-full outline-none p-2"
+            className="border-2 border-slate-200 rounded-md shadow-inner w-full outline-none p-2 mb-3"
             type="text"
             name="search"
             id="search"
