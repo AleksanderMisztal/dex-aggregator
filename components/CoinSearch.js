@@ -24,29 +24,41 @@ export const CoinSearch = (props) => {
   const [phrase, setPhrase] = useState('');
   const [coins, setCoins] = useState(props.initCoins);
 
+  const findCoins = (phrase) => {
+    if (!phrase) setCoins(props.initCoins);
+    else getCoins(phrase).then(setCoins);
+  };
+
   const handleChange = (e) => {
     const phrase = e.target.value;
     setPhrase(phrase);
-    if (!phrase) setCoins(props.initCoins);
-    else getCoins(phrase).then(setCoins);
+    findCoins(phrase);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const phrase = e.target.coinName.value;
+    setPhrase(phrase);
+    findCoins(phrase);
   };
 
   return (
     <div className="container w-full max-w-md mx-auto">
       <div className="shadow-lg rounded-lg m-10 p-6">
         <h1 className="text-center font-bold">Coin search</h1>
-        <form action="" autoComplete="off">
+        <form action="" autoComplete="off" onSubmit={handleSubmit}>
           <input
             className="border-2 border-slate-200 rounded-md shadow-inner w-full outline-none p-2 mb-3"
             type="text"
-            name="search"
-            id="search"
+            name="coinName"
+            id="coinName"
             value={phrase}
             onChange={handleChange}
           />
           <CoinsList coins={coins} />
         </form>
       </div>
+      Phrase: {phrase}
     </div>
   );
 };
