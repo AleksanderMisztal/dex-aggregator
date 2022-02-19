@@ -34,19 +34,17 @@ export const CoinSearch = ({ initCoins, onCoinSelected }) => {
   };
 
   return (
-    <div className="container w-full max-w-md mx-auto">
-      <div className="shadow-lg rounded-lg m-10 p-6">
-        <h1 className="text-center font-bold">Coin search</h1>
-        <input
-          className="border-2 border-slate-200 rounded-md shadow-inner w-full outline-none p-2 mb-2"
-          type="text"
-          name="coinName"
-          id="coinName"
-          value={phrase}
-          onChange={handleChange}
-        />
-        <CoinsList coins={coins} onCoinSelected={onCoinSelected} />
-      </div>
+    <div className="w-96 max-w-full shadow-lg rounded-lg p-6 bg-white">
+      <h1 className="text-center font-bold">Coin search</h1>
+      <input
+        className="border-2 border-slate-200 rounded-md shadow-inner w-full outline-none p-2 mb-2"
+        type="text"
+        name="coinName"
+        id="coinName"
+        value={phrase}
+        onChange={handleChange}
+      />
+      <CoinsList coins={coins} onCoinSelected={onCoinSelected} />
     </div>
   );
 };
