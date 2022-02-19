@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { getCoinDataByAddress } from '../lib/coingeckoApi';
+import { getCoinDataByAddress } from '../../lib/coingeckoApi';
 import {
   getBalance,
   getPairAddress,
   getDenominatedPairReserves,
   getTotalSupply,
-} from '../lib/contractMethods';
+} from '../../lib/contractMethods';
 
 const Input = ({ value, name, placeholder, onChange }) => (
   <div className="mx-auto my-2 w-80">

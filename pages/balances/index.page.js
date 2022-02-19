@@ -1,6 +1,6 @@
 import React from 'react';
-import { Navbar } from '../components/Navbar';
-import BalanceCalculator from '../components/BalanceCalculator';
+import { Navbar } from '../common/Navbar';
+import BalanceCalculator from './BalanceCalculator';
 
 export default function Home() {
   return (

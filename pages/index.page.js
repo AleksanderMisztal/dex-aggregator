@@ -1,6 +1,6 @@
 import React from 'react';
-import { CoinSearch } from '../components/CoinSearch';
-import { Navbar } from '../components/Navbar';
+import { CoinSearch } from './coins/CoinSearch';
+import { Navbar } from './common/Navbar';
 import { findTopEthCoins } from '../lib/coingeckoApi';
 import fs from 'fs';
 

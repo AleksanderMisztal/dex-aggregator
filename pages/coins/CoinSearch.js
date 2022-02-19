@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CoinInfo from './CoinInfo';
-import { findTopEthCoins } from '../lib/coingeckoApi';
+import { findTopEthCoins } from '../../lib/coingeckoApi';
 
 const CoinsList = ({ coins }) => {
   if (coins.length === 0)
@@ -19,6 +19,7 @@ const CoinsList = ({ coins }) => {
 };
 
 export const CoinSearch = ({ initCoins, ethCoinsList }) => {
+  console.log('trying to render coinsearch');
   const [phrase, setPhrase] = useState('');
   const [coins, setCoins] = useState(initCoins);
 
@@ -56,7 +57,6 @@ export const CoinSearch = ({ initCoins, ethCoinsList }) => {
           <CoinsList coins={coins} />
         </form>
       </div>
-      Phrase: {phrase}
     </div>
   );
 };
