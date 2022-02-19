@@ -35,7 +35,6 @@ const BalanceCalculator = () => {
       userAddress: { value: userAddress },
     } = e.target;
 
-    console.log('Getting info');
     const data = await getPairInfo(address1, address2, userAddress);
     setData(data);
     setLoaded(true);

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import CoinInfo from './CoinInfo';
-import { findTopEthCoins } from '../../lib/coingeckoApi';
+import { fetchJson } from '../../lib/fetchApi';
 
-const CoinsList = ({ coins }) => {
+const CoinsList = ({ coins, onCoinSelected }) => {
   if (coins.length === 0)
     return (
       <div className="text-slate-500 text-center mt-6">No coins found</div>
@@ -11,21 +11,20 @@ const CoinsList = ({ coins }) => {
     <ul className="max-h-72 overflow-scroll overflow-x-hidden p-1">
       {coins.map((coin, i) => (
         <li key={i} className="my-2 mr-2">
-          <CoinInfo coin={coin} onClick={() => alert(coin.name)} />
+          <CoinInfo coin={coin} onClick={() => onCoinSelected(coin)} />
         </li>
       ))}
     </ul>
   );
 };
 
-export const CoinSearch = ({ initCoins, ethCoinsList }) => {
-  console.log('trying to render coinsearch');
+export const CoinSearch = ({ initCoins, onCoinSelected }) => {
   const [phrase, setPhrase] = useState('');
   const [coins, setCoins] = useState(initCoins);
 
   const findCoins = (phrase) => {
     if (!phrase) setCoins(initCoins);
-    else findTopEthCoins(phrase, ethCoinsList).then(setCoins);
+    else fetchJson('/api/coins', { phrase }).then(setCoins);
   };
 
   const handleChange = (e) => {
@@ -46,7 +45,7 @@ export const CoinSearch = ({ initCoins, ethCoinsList }) => {
           value={phrase}
           onChange={handleChange}
         />
-        <CoinsList coins={coins} />
+        <CoinsList coins={coins} onCoinSelected={onCoinSelected} />
       </div>
     </div>
   );
