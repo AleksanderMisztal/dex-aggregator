@@ -33,13 +33,17 @@ export const PoolSelect = ({ onSelected }) => {
         <CoinSelect coin={coin2} onCoinSelected={setCoin2} />
       </div>
       <div className="text-center">
-        {poolAddress ? (
-          <>
+        {/* can't just say poolAddress ? ... because it's a bignumber object */}
+        {poolAddress && poolAddress != 0 ? (
+          <div className="mt-3 flex gap-3 items-center">
             Pool found at {shortenAddress(poolAddress)}
-            <button className="p-3 bg-blue-500" onClick={handleSelect}>
+            <button
+              className="rounded-full py-2 px-4 bg-gradient-to-r from-violet-500 to-fuchsia-500"
+              onClick={handleSelect}
+            >
               Add
             </button>
-          </>
+          </div>
         ) : checking ? (
           'Loading...'
         ) : coin1 && coin2 ? (
