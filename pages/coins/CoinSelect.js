@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CoinIcon } from '../common/CoinIcon';
+import { CoinIcon } from './CoinIcon';
 import { Dialog } from '../common/Dialog';
 import { CoinSearch } from './CoinSearch';
 

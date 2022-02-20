@@ -3,7 +3,7 @@ import { Navbar } from './common/Navbar';
 
 export default function Document() {
   return (
-    <Html>
+    <Html className="bg-pink-50">
       <Head />
       <body>
         <Navbar />
