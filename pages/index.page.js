@@ -8,8 +8,8 @@ import { AddressSelect } from './common/AddressSelect';
 
 import { getPairInfo } from '../lib/contractMethods';
 import { fetchJson } from '../lib/fetchApi';
-import { getPairAddress } from '../lib/contractMethods';
 
+const whale = '0xcd8AA390e6EAbBd2169b3580C1F7ce854675fD03';
 export default function Coins() {
   const [initCoins, setInitCoins] = useState([]);
   const [selecting1, setSelecting1] = useState(false);
@@ -17,11 +17,7 @@ export default function Coins() {
 
   const [coin1, setCoin1] = useState(undefined);
   const [coin2, setCoin2] = useState(undefined);
-
-  const [pairAddress, setPairAddress] = useState(undefined);
-  const [userAddress, setUserAddress] = useState(
-    '0xcd8AA390e6EAbBd2169b3580C1F7ce854675fD03'
-  );
+  const [userAddress, setUserAddress] = useState(whale);
   const [data, setData] = useState(undefined);
 
   useEffect(() => {
@@ -40,16 +36,10 @@ export default function Coins() {
     setCoin(coin);
 
     if (coin && otherCoin) {
-      getPairAddress(coin.address, otherCoin.address).then((address) => {
-        setPairAddress(address);
-      });
+      getPairInfo(coin.address, otherCoin.address, userAddress).then(setData);
     }
   };
 
-  const getData = async () => {
-    const data = await getPairInfo(coin1.address, coin2.address, userAddress);
-    setData(data);
-  };
   return (
     <div>
       <AddressSelect onAddressSelected={setUserAddress} />
@@ -83,21 +73,7 @@ export default function Coins() {
           />
         </Dialog>
       </div>
-      <div className="max-w-md mx-auto bg-slate-100 p-4 my-5">
-        Pair address: {pairAddress}
-        <br />
-        User address: {userAddress}
-        <br />
-        {coin1 && coin2 && userAddress && pairAddress != 0 && (
-          <button
-            onClick={getData}
-            className="w-40 mx-auto text-center bg-green-200"
-          >
-            Get pair data
-          </button>
-        )}
-        {data && <PoolInfo data={data} />}
-      </div>
+      {data && <PoolInfo data={data} />}
     </div>
   );
 }

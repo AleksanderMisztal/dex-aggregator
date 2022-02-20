@@ -37,6 +37,7 @@ export const CoinSearch = ({ initCoins, onCoinSelected }) => {
     <div className="w-96 max-w-full shadow-lg rounded-lg p-6 bg-white">
       <h1 className="text-center font-bold">Coin search</h1>
       <input
+        autoComplete="off"
         className="border-2 border-slate-200 rounded-md shadow-inner w-full outline-none p-2 mb-2"
         type="text"
         name="coinName"
