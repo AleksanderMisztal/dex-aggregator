@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { CoinInfo } from './CoinInfo';
 import { fetchJson } from '../../lib/fetchApi';
 
 const CoinsList = ({ coins, onCoinSelected }) => {
+  const topRef = useRef(null);
+  useEffect(() => {
+    if (coins.length === 0) return;
+    topRef.current.scrollTop = 0;
+  }, [coins]);
+
   if (coins.length === 0)
     return (
-      <div className="text-slate-500 text-center mt-6">No coins found</div>
+      <div className="h-72 text-slate-500 text-center pt-6">No coins found</div>
     );
   return (
-    <ul className="max-h-72 overflow-scroll overflow-x-hidden p-1">
+    <ul className="h-72 overflow-scroll overflow-x-hidden p-1" ref={topRef}>
       {coins.map((coin, i) => (
         <li key={i} className="my-2 mr-2">
           <CoinInfo coin={coin} onClick={() => onCoinSelected(coin)} />
@@ -22,15 +28,14 @@ export const CoinSearch = ({ initCoins, onCoinSelected }) => {
   const [phrase, setPhrase] = useState('');
   const [coins, setCoins] = useState(initCoins);
 
-  const findCoins = (phrase) => {
-    if (!phrase) setCoins(initCoins);
-    else fetchJson('/api/coins', { phrase }).then(setCoins);
-  };
-
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const phrase = e.target.value;
     setPhrase(phrase);
-    findCoins(phrase);
+    if (!phrase) setCoins(initCoins);
+    else {
+      const coins = await fetchJson('/api/coins', { phrase });
+      setCoins(coins);
+    }
   };
 
   return (
