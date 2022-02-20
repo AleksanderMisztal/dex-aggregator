@@ -2,18 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { CoinSelect } from './CoinSelect';
 import { getPairAddress } from '../../lib/contractMethods';
 import { shortenAddress } from '../../lib/utils';
-import { fetchJson } from '../../lib/fetchApi';
 
 export const PoolSelect = ({ onSelected }) => {
-  const [initCoins, setInitCoins] = useState([]);
   const [poolAddress, setPoolAddress] = useState(undefined);
   const [coin1, setCoin1] = useState(undefined);
   const [coin2, setCoin2] = useState(undefined);
   const [checking, setChecking] = useState(false);
-
-  useEffect(() => {
-    fetchJson('/api/coins', { phrase: '' }).then(setInitCoins);
-  }, []);
 
   useEffect(() => {
     if (!coin1 || !coin2) return;
@@ -35,16 +29,8 @@ export const PoolSelect = ({ onSelected }) => {
   return (
     <div className="w-max mx-auto p-4 rounded bg-purple-100">
       <div className="flex gap-x-4 justify-around">
-        <CoinSelect
-          coin={coin1}
-          initCoins={initCoins}
-          onCoinSelected={setCoin1}
-        />
-        <CoinSelect
-          coin={coin2}
-          initCoins={initCoins}
-          onCoinSelected={setCoin2}
-        />
+        <CoinSelect coin={coin1} onCoinSelected={setCoin1} />
+        <CoinSelect coin={coin2} onCoinSelected={setCoin2} />
       </div>
       <div className="text-center">
         {poolAddress ? (

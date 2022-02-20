@@ -24,18 +24,19 @@ const CoinsList = ({ coins, onCoinSelected }) => {
   );
 };
 
-export const CoinSearch = ({ initCoins, onCoinSelected }) => {
+export const CoinSearch = ({ onCoinSelected }) => {
   const [phrase, setPhrase] = useState('');
-  const [coins, setCoins] = useState(initCoins);
+  const [coins, setCoins] = useState([]);
+
+  useEffect(() => {
+    fetchJson('/api/coins', { phrase: '' }).then(setCoins);
+  }, []);
 
   const handleChange = async (e) => {
-    const phrase = e.target.value;
-    setPhrase(phrase);
-    if (!phrase) setCoins(initCoins);
-    else {
-      const coins = await fetchJson('/api/coins', { phrase });
-      setCoins(coins);
-    }
+    const newPhrase = e.target.value;
+    setPhrase(newPhrase);
+    const coins = await fetchJson('/api/coins', { phrase: newPhrase });
+    if (newPhrase === phrase) setCoins(coins);
   };
 
   return (
