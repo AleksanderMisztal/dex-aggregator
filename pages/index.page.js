@@ -15,14 +15,14 @@ export default function Coins() {
   const [coin1, setCoin1] = useState(undefined);
   const [coin2, setCoin2] = useState(undefined);
   const [userAddress, setUserAddress] = useState(whale);
-  const [data, setData] = useState(undefined);
+  const [pool, setPool] = useState(undefined);
 
   useEffect(() => {
     fetchJson('/api/coins', { phrase: '' }).then(setInitCoins);
   }, []);
   useEffect(() => {
     if (!coin1 || !coin2) return;
-    getPairInfo(coin1.address, coin2.address, userAddress).then(setData);
+    getPairInfo(coin1.address, coin2.address, userAddress).then(setPool);
   }, [coin1, coin2]);
 
   return (
@@ -40,7 +40,15 @@ export default function Coins() {
           onCoinSelected={setCoin2}
         />
       </div>
-      <div className="mx-auto w-max">{data && <PoolInfo data={data} />}</div>
+      <div className="mx-auto w-max">
+        {pool ? (
+          <PoolInfo data={pool} />
+        ) : coin1 && coin2 ? (
+          'Pool not found.'
+        ) : (
+          'Select coins to see pool data'
+        )}
+      </div>
     </div>
   );
 }
