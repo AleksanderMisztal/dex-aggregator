@@ -1,10 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
+import { shortenAddress } from '../../lib/utils';
 
-export default function CoinInfo({ coin, ...props }) {
-  const ad = coin.address;
-  const shortAddr =
-    ad.substring(0, 7) + '...' + ad.substring(ad.length - 5, ad.length);
+export const CoinInfo = ({ coin, ...props }) => {
+  const shortAddr = shortenAddress(coin.address);
   return (
     <div
       className="flex items-center rounded-md bg-slate-100 p-2 shadow-md hover:scale-[1.02] hover:cursor-pointer"
@@ -23,4 +22,4 @@ export default function CoinInfo({ coin, ...props }) {
       </div>
     </div>
   );
-}
+};

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CoinInfo from './CoinInfo';
+import { CoinInfo } from './CoinInfo';
 import { fetchJson } from '../../lib/fetchApi';
 
 const CoinsList = ({ coins, onCoinSelected }) => {

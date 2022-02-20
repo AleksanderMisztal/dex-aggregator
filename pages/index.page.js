@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
+
 import { CoinSearch } from './coins/CoinSearch';
-import { Navbar } from './common/Navbar';
-import CoinInfo from './coins/CoinInfo';
-import { getPairAddress } from '../lib/contractMethods';
-import { fetchJson } from '../lib/fetchApi';
+import { CoinInfo } from './coins/CoinInfo';
+import { PoolInfo } from './pools/PoolInfo';
 import { Dialog } from './common/Dialog';
-import PoolInfo from './pools/PoolInfo';
+import { AddressSelect } from './common/AddressSelect';
+
 import { getPairInfo } from '../lib/contractMethods';
+import { fetchJson } from '../lib/fetchApi';
+import { getPairAddress } from '../lib/contractMethods';
 
 export default function Coins() {
   const [initCoins, setInitCoins] = useState([]);
@@ -17,7 +19,9 @@ export default function Coins() {
   const [coin2, setCoin2] = useState(undefined);
 
   const [pairAddress, setPairAddress] = useState(undefined);
-  const [userAddress, setUserAddress] = useState(undefined);
+  const [userAddress, setUserAddress] = useState(
+    '0xcd8AA390e6EAbBd2169b3580C1F7ce854675fD03'
+  );
   const [data, setData] = useState(undefined);
 
   useEffect(() => {
@@ -48,14 +52,7 @@ export default function Coins() {
   };
   return (
     <div>
-      <Navbar />
-      <div className="max-w-md mx-auto bg-slate-100 p-4 my-5">
-        <input
-          className="w-full"
-          type="text"
-          onChange={(e) => setUserAddress(e.target.value)}
-        />
-      </div>
+      <AddressSelect onAddressSelected={setUserAddress} />
       <div className="max-w-md mx-auto bg-slate-100 p-4 my-5">
         <button
           className="w-40 mx-auto text-center bg-green-200"
@@ -88,6 +85,9 @@ export default function Coins() {
       </div>
       <div className="max-w-md mx-auto bg-slate-100 p-4 my-5">
         Pair address: {pairAddress}
+        <br />
+        User address: {userAddress}
+        <br />
         {coin1 && coin2 && userAddress && pairAddress != 0 && (
           <button
             onClick={getData}
