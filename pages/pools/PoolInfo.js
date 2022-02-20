@@ -1,6 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
 import { MdArrowDropDown } from 'react-icons/md';
+import { CoinIcon } from '../common/CoinIcon';
 import { formatBalance } from '../../lib/utils';
 
 export const PoolInfo = ({
@@ -8,14 +8,16 @@ export const PoolInfo = ({
 }) => {
   const { name: name1, price: price1, img: img1 } = token1Data;
   const { name: name2, price: price2, img: img2 } = token2Data;
+
   const balance1 = reserve1 * poolFraction;
   const balance2 = reserve2 * poolFraction;
   const b1Usd = balance1 * price1;
   const b2Usd = balance2 * price2;
   const tvl = reserve1 * price1 + reserve2 * price2;
-  console.log(token1Data);
-  const icon1 = <Icon img={img1} alt={name1} />;
-  const icon2 = <Icon img={img2} alt={name2} />;
+
+  const icon1 = <CoinIcon img={img1} alt={name1} />;
+  const icon2 = <CoinIcon img={img2} alt={name2} />;
+
   return (
     <div className="w-80 max-w-full p-5 shadow-lg rounded-lg bg-gradient-to-r from-violet-500 to-fuchsia-500">
       <div className="flex justify-between">
@@ -36,12 +38,6 @@ export const PoolInfo = ({
     </div>
   );
 };
-
-const Icon = ({ img, alt }) => (
-  <div className="w-4 h-4 relative mt-1">
-    <Image src={img} alt={alt} layout="fill" objectFit="contain" />
-  </div>
-);
 
 const Row = ({ item1, item2, icon }) => (
   <div className="flex justify-between">
