@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { Dialog } from './Dialog';
 import { shortenAddress, validateAddress } from '../../lib/utils';
 
-export const AddressSelect = ({ onAddressSelected }) => {
+export const AddressSelect = ({ onAddressSelected, initialAddress }) => {
   const [open, setOpen] = useState(false);
-  const [addresses, setAddresses] = useState([]);
-  const [activeAddress, setActiveAddress] = useState(undefined);
+  const [addresses, setAddresses] = useState([initialAddress]);
+  const [activeAddress, setActiveAddress] = useState(0);
   const [validInput, setValidInput] = useState(false);
 
   const activateAddress = (idx) => {
