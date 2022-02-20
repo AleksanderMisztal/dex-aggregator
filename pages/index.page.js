@@ -5,7 +5,7 @@ import CoinInfo from './coins/CoinInfo';
 import { getPairAddress } from '../lib/contractMethods';
 import { fetchJson } from '../lib/fetchApi';
 import { Dialog } from './common/Dialog';
-import BalancesInfo from './balances/BalancesInfo';
+import PoolInfo from './pools/PoolInfo';
 import { getPairInfo } from '../lib/contractMethods';
 
 export default function Coins() {
@@ -96,7 +96,7 @@ export default function Coins() {
             Get pair data
           </button>
         )}
-        {data && <BalancesInfo data={data} />}
+        {data && <PoolInfo data={data} />}
       </div>
     </div>
   );

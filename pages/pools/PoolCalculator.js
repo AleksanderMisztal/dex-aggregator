@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getPairInfo } from '../../lib/contractMethods';
-import BalancesInfo from './BalancesInfo';
+import PoolInfo from './PoolInfo';
 
 const Input = ({ value, name, placeholder, onChange }) => (
   <div className="mx-auto my-2 w-80">
@@ -18,7 +18,7 @@ const wethAddress = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
 const usdcAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
 const whaleAddress = '0xcd8AA390e6EAbBd2169b3580C1F7ce854675fD03';
 
-const BalanceCalculator = () => {
+const PoolCalculator = () => {
   const [address1, setAddress1] = useState(usdcAddress);
   const [address2, setAddress2] = useState(wethAddress);
   const [userAddress, setUserAddress] = useState(whaleAddress);
@@ -72,7 +72,7 @@ const BalanceCalculator = () => {
       </form>
     );
 
-  return <BalancesInfo data={data} />;
+  return <PoolInfo data={data} />;
 };
 
-export default BalanceCalculator;
+export default PoolCalculator;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navbar } from '../common/Navbar';
-import BalanceCalculator from './BalanceCalculator';
+import PoolCalculator from './PoolCalculator';
 
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <BalanceCalculator />
+      <PoolCalculator />
     </div>
   );
 }
