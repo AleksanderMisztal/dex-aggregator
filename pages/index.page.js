@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { PoolInfo } from './pools/PoolInfo';
-import { PoolSelect } from './coins/PoolSelect';
-import { AddressSelect } from './common/AddressSelect';
+import { PoolInfo } from './components/PoolInfo';
+import { PoolSelect } from './components/PoolSelect';
+import { AddressSelect } from './components/AddressSelect';
 import { getPairInfo } from '../lib/contractMethods';
 import { fetchJson } from '../lib/fetchApi';
 

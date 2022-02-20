@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MdArrowDropDown, MdArrowDropUp, MdContentCopy } from 'react-icons/md';
-import { CoinIcon } from '../coins/CoinIcon';
+import { CoinIcon } from './CoinIcon';
 import { formatBalance, shortenAddress } from '../../lib/utils';
 
 export const PoolInfo = ({

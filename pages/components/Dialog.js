@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog as HeadlessDialog } from '@headlessui/react';
 
-export const Dialog = ({ children, open, onClose, ...props }) => {
+export const Dialog = ({ children, open, onClose }) => {
   return (
     <HeadlessDialog open={open} onClose={onClose}>
       <HeadlessDialog.Overlay className="fixed inset-0 bg-black opacity-30" />

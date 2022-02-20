@@ -11,16 +11,11 @@ export const Navbar = () => {
             </span>
           </a>
         </Link>
-        <Link href="/">
+        {/* <Link href="/">
           <a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white font-bold items-center justify-center hover:bg-blue-600 hover:text-white">
             Coins
           </a>
-        </Link>
-        <Link href="/pools">
-          <a className="lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white font-bold items-center justify-center hover:bg-blue-600 hover:text-white ">
-            Balance calculator
-          </a>
-        </Link>
+        </Link> */}
       </nav>
     </>
   );

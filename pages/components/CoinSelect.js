@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CoinIcon } from './CoinIcon';
-import { Dialog } from '../common/Dialog';
+import { Dialog } from './Dialog';
 import { CoinSearch } from './CoinSearch';
 
 export const CoinSelect = ({ coin, initCoins, onCoinSelected }) => {
