@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
-import { shortenAddress, validateAddress } from '../../lib/utils';
+import { shortenAddress, isValidAddress } from '../../lib/utils';
 
 export const AddressSelect = ({ onAddressSelected, initialAddress }) => {
   const [open, setOpen] = useState(false);
@@ -18,7 +18,7 @@ export const AddressSelect = ({ onAddressSelected, initialAddress }) => {
   };
 
   const addAddress = (address) => {
-    if (!validateAddress(address)) return;
+    if (!isValidAddress(address)) return;
     if (addresses.includes(address)) return;
     setAddresses([...addresses, address]);
   };
@@ -32,7 +32,7 @@ export const AddressSelect = ({ onAddressSelected, initialAddress }) => {
 
   const validateInput = (e) => {
     const input = e.target.value;
-    const valid = validateAddress(input) && !addresses.includes(input);
+    const valid = isValidAddress(input) && !addresses.includes(input);
     setValidInput(valid);
   };
 

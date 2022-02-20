@@ -33,8 +33,8 @@ export const PoolSelect = ({ onSelected }) => {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex justify-around">
+    <div className="w-max mx-auto p-4 rounded bg-purple-100">
+      <div className="flex gap-x-4 justify-around">
         <CoinSelect
           coin={coin1}
           initCoins={initCoins}
@@ -46,20 +46,22 @@ export const PoolSelect = ({ onSelected }) => {
           onCoinSelected={setCoin2}
         />
       </div>
-      {poolAddress ? (
-        <div>
-          Pool found at {shortenAddress(poolAddress)}
-          <button className="p-3 bg-blue-500" onClick={handleSelect}>
-            Add
-          </button>
-        </div>
-      ) : checking ? (
-        'Loading...'
-      ) : coin1 && coin2 ? (
-        'Pool not found.'
-      ) : (
-        'Select coins to add a pool.'
-      )}
+      <div className="text-center">
+        {poolAddress ? (
+          <>
+            Pool found at {shortenAddress(poolAddress)}
+            <button className="p-3 bg-blue-500" onClick={handleSelect}>
+              Add
+            </button>
+          </>
+        ) : checking ? (
+          'Loading...'
+        ) : coin1 && coin2 ? (
+          'Pool not found.'
+        ) : (
+          'Select coins to add a pool.'
+        )}
+      </div>
     </div>
   );
 };
