@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { CoinInfo } from './CoinInfo';
 import { fetchJson } from '../../lib/fetchApi';
+import debounce from 'lodash.debounce';
 
 const CoinsList = ({ coins, onCoinSelected }) => {
   const topRef = useRef(null);
@@ -24,19 +25,22 @@ const CoinsList = ({ coins, onCoinSelected }) => {
   );
 };
 
-export const CoinSearch = ({ onCoinSelected }) => {
-  const [phrase, setPhrase] = useState('');
-  const [coins, setCoins] = useState([]);
+const searchFun = (phrase, setResults) => {
+  fetchJson('/api/coins', { phrase }).then(setResults);
+};
+const debouncedSearch = debounce(searchFun, 300);
 
-  useEffect(() => {
-    fetchJson('/api/coins', { phrase: '' }).then(setCoins);
-  }, []);
+export const CoinSearch = ({ onCoinSelected, initCoins }) => {
+  const [phrase, setPhrase] = useState('');
+  const [coins, setCoins] = useState(initCoins);
 
   const handleChange = async (e) => {
     const newPhrase = e.target.value;
     setPhrase(newPhrase);
-    const coins = await fetchJson('/api/coins', { phrase: newPhrase });
-    if (newPhrase === phrase) setCoins(coins);
+    if (newPhrase === '') {
+      debouncedSearch.cancel();
+      setCoins(initCoins);
+    } else debouncedSearch(newPhrase, setCoins);
   };
 
   return (

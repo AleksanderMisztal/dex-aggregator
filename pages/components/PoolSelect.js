@@ -3,7 +3,7 @@ import { CoinSelect } from './CoinSelect';
 import { getPairAddress } from '../../lib/contractMethods';
 import { shortenAddress } from '../../lib/utils';
 
-export const PoolSelect = ({ onSelected }) => {
+export const PoolSelect = ({ onSelected, initCoins }) => {
   const [poolAddress, setPoolAddress] = useState(undefined);
   const [coin1, setCoin1] = useState(undefined);
   const [coin2, setCoin2] = useState(undefined);
@@ -29,8 +29,16 @@ export const PoolSelect = ({ onSelected }) => {
   return (
     <div className="w-max mx-auto p-4 rounded bg-purple-100">
       <div className="flex gap-x-4 justify-around">
-        <CoinSelect coin={coin1} onCoinSelected={setCoin1} />
-        <CoinSelect coin={coin2} onCoinSelected={setCoin2} />
+        <CoinSelect
+          coin={coin1}
+          onCoinSelected={setCoin1}
+          initCoins={initCoins}
+        />
+        <CoinSelect
+          coin={coin2}
+          onCoinSelected={setCoin2}
+          initCoins={initCoins}
+        />
       </div>
       <div className="text-center">
         {/* can't just say poolAddress ? ... because it's a bignumber object */}
